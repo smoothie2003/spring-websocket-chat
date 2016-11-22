@@ -32,11 +32,6 @@ public class UserService {
 		return responseEntity;
 	}
 
-	private ResponseEntity<Void> responseToCreateTheUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public ResponseEntity<Void> authenticateUser(User user) {
 
 		ResponseEntity<Void> responseEntity = null;
@@ -49,6 +44,12 @@ public class UserService {
 
 		return responseEntity;
 	}
+
+	private ResponseEntity<Void> responseToCreateTheUser(User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	private ResponseEntity<Void> responseIfPassNotExist(User user) {
 

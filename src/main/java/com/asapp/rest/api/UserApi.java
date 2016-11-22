@@ -1,6 +1,8 @@
 package com.asapp.rest.api;
 
+import com.asapp.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +15,7 @@ import com.asapp.service.UserService;
 
 @RestController
 @RequestMapping("/user")
-public class AuthApi {
+public class UserApi {
 	
 	@Autowired
 	UserService userService;
@@ -27,9 +29,14 @@ public class AuthApi {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> authenticateUser(@RequestParam("name") String name, @RequestParam("pass") String pass ) {
-		
-		ResponseEntity<Void> responseEntity = ResponseEntity.badRequest().build();
+	public ResponseEntity<Response> authenticateUser(@RequestParam("name") String name, @RequestParam("pass") String pass ) {
+
+		Response response = new Response();
+		response.setMessage("API Not Ready");
+		response.setStatus("400");
+		response.setResponse("API Not Ready");
+
+		ResponseEntity<Response> responseEntity = new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		
 		return responseEntity;
 	}
