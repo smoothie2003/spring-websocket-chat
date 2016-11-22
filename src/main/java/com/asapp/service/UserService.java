@@ -1,5 +1,6 @@
 package com.asapp.service;
 
+import com.asapp.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UserService {
 		return responseEntity;
 	}
 
-	public ResponseEntity<Void> authenticateUser(User user) {
+	public Response authenticateUser(User user) {
 
 		ResponseEntity<Void> responseEntity = null;
 
@@ -42,7 +43,7 @@ public class UserService {
 		// If not success
 		responseEntity = ResponseEntity.status(HttpStatus.OK).build();
 
-		return responseEntity;
+		return null;
 	}
 
 	private ResponseEntity<Void> responseToCreateTheUser(User user) {

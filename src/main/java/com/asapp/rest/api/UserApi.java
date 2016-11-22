@@ -31,10 +31,9 @@ public class UserApi {
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<Response> authenticateUser(@RequestParam("name") String name, @RequestParam("pass") String pass ) {
 
-		Response response = new Response();
-		response.setMessage("API Not Ready");
-		response.setStatus("400");
-		response.setResponse("API Not Ready");
+		User user = new User(name, pass);
+
+		Response response = userService.authenticateUser(user);
 
 		ResponseEntity<Response> responseEntity = new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		
