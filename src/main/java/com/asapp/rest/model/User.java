@@ -2,11 +2,15 @@ package com.asapp.rest.model;
 
 public class User {
 
-	private String id;
+	private String user;
 	private String pass;
 	
-	public User(String id, String pass) {
-		this.id = id;
+	public User() {
+		
+	}
+	
+	public User(String user, String pass) {
+		this.user = user;
 		this.pass = pass;
 	}
 
@@ -18,12 +22,12 @@ public class User {
 		this.pass = pass;
 	}
 
-	public String getId() {
-		return id;
+	public String getUser() {
+		return user;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 }

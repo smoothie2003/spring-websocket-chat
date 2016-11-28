@@ -14,7 +14,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.crypto.stream.CryptoInputStream;
 import org.apache.commons.crypto.stream.CryptoOutputStream;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EncryptionService {
 	
 	public String encrypt(String value) throws UnsupportedEncodingException {
@@ -59,7 +61,7 @@ public class EncryptionService {
                 decryptedLen += i;
             }
             output = new String(decryptedData, 0, decryptedLen, StandardCharsets.UTF_8);
-            System.out.println("Decrypted: "+ output);
+            
         } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

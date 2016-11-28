@@ -1,4 +1,4 @@
-package com.asapp.model;
+package com.asapp.rest.model;
 
 public class Response {
 	

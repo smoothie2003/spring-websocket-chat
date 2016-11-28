@@ -1,12 +1,14 @@
 package com.asapp.service;
 
-import com.asapp.model.Response;
+import java.io.UnsupportedEncodingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.asapp.dao.UserDAO;
+import com.asapp.rest.model.Response;
 import com.asapp.rest.model.User;
 
 @Service
@@ -14,10 +16,13 @@ public class UserService {
 
 	@Autowired
 	UserDAO userDAO;
+	
+	@Autowired
+	EncryptionService encryptionService;
 
-	public ResponseEntity<Void> addNewUser(User user) {
+	public ResponseEntity<Response> addNewUser(User user) {
 
-		ResponseEntity<Void> responseEntity = null;
+		ResponseEntity<Response> responseEntity = null;
 
 		responseEntity = responseIfPassNotExist(user);
 
@@ -33,38 +38,115 @@ public class UserService {
 		return responseEntity;
 	}
 
-	public Response authenticateUser(User user) {
+	public ResponseEntity<Response> authenticateUser(User user) {
 
-		ResponseEntity<Void> responseEntity = null;
+		ResponseEntity<Response> responseEntity = null;
 
 		// Check if user already exists
-		responseEntity = ResponseEntity.badRequest().build();
+		responseEntity = this.responseIfPassNotExist(user);
 
-		// If not success
-		responseEntity = ResponseEntity.status(HttpStatus.OK).build();
-
-		return null;
+		if(responseEntity == null) {
+			
+			try {
+				String decryptedPass = encryptionService.decrypt(user.getPass());
+				
+				User queriedUser = userDAO.findUser(user);
+				
+				String decryptedPassFromDB = encryptionService.decrypt(queriedUser.getPass());
+				
+				if(user.getUser().equals(queriedUser.getUser()) && decryptedPass.equals(decryptedPassFromDB)) {
+					Response response = new Response();
+					response.setStatus(HttpStatus.OK.toString());
+					response.setMessage("User Authorized");
+					response.setResponse("OK");
+					responseEntity = new ResponseEntity(response, HttpStatus.OK); 
+				} else {
+					Response response = new Response();
+					response.setStatus(HttpStatus.UNAUTHORIZED.toString());
+					response.setMessage("User not authorized");
+					response.setResponse("Unauthorized");
+					responseEntity = new ResponseEntity(response, HttpStatus.UNAUTHORIZED);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+				Response response = new Response();
+				response.setStatus(HttpStatus.UNAUTHORIZED.toString());
+				response.setMessage("User not authorized");
+				response.setResponse("Unauthorized");
+				responseEntity = new ResponseEntity(response, HttpStatus.UNAUTHORIZED);
+			}
+		}		
+		return responseEntity;
 	}
 
-	private ResponseEntity<Void> responseToCreateTheUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	private ResponseEntity<Response> responseToCreateTheUser(User user) {
+		
+		ResponseEntity<Response> responseBody = null;
+		
+		String encryptedPassword = null;
+		
+		try {
+			encryptedPassword = encryptionService.encrypt(user.getPass());
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		user.setPass(encryptedPassword);
+		
+		boolean userNameCreated = userDAO.createUserName(user);
+		
+		if(userNameCreated) {
+			Response response = new Response();
+			response.setStatus(HttpStatus.CREATED.toString());
+			response.setMessage("User :" + user.getUser() + " created.");
+			response.setResponse("User created");
+			
+			responseBody = new ResponseEntity(response, HttpStatus.CREATED);
+			
+			return responseBody;
+		}
+		
+		Response response = new Response();
+		response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.toString());
+		response.setMessage("User not created, service unavailable");
+		response.setResponse("Service Unavailable");
+		
+		responseBody = new ResponseEntity(response, HttpStatus.SERVICE_UNAVAILABLE);
+		
+		return responseBody;
 	}
 
 
-	private ResponseEntity<Void> responseIfPassNotExist(User user) {
+	private ResponseEntity<Response> responseIfPassNotExist(User user) {
 
 		if (user.getPass() == null || user.getPass().isEmpty()) {
-			return ResponseEntity.badRequest().build();
+			
+			Response response = new Response();
+			response.setStatus(HttpStatus.BAD_REQUEST.toString());
+			response.setMessage("Password not Populated");
+			response.setStatus("Bad Request");
+			
+			ResponseEntity<Response> responseBody = new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+			
+			return responseBody;
 		}
 
 		return null;
 	}
 
-	private ResponseEntity<Void> responseIfUserAlreadyExists(User user) {
+	private ResponseEntity<Response> responseIfUserAlreadyExists(User user) {
 		
 		if(userDAO.isExistingUserName(user) == true) {
-			return ResponseEntity.badRequest().build();
+			
+			Response response = new Response();
+			response.setStatus(HttpStatus.UNAUTHORIZED.toString());
+			response.setMessage("User already Existing");
+			response.setStatus("Unauthorized");
+			
+			ResponseEntity<Response> responseBody = new ResponseEntity(response, HttpStatus.UNAUTHORIZED);
+			
+			return responseBody;
 		}
 		
 		return null;
