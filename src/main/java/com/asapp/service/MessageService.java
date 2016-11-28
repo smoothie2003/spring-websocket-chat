@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.asapp.dao.MessageDAO;
 import com.asapp.rest.model.Message;
+import com.asapp.rest.model.Response;
 
 @Service
 public class MessageService {
@@ -20,7 +21,7 @@ public class MessageService {
 	@Autowired
 	MessageDAO messageDAO;
 
-	public ResponseEntity<Void> insertMessage(Message message) {
+	public ResponseEntity<Response> insertMessage(Message message) {
 		
 		if(message.getMessageType().equals("image")) {
 			try {
@@ -36,7 +37,14 @@ public class MessageService {
 				message.setMetaData(metaData.toString());
 				
 			} catch(Exception e) {
-				return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).build();
+				Response responseBody = new Response();
+				responseBody.setMessage("Only supporting image, video and txt at this time");
+				responseBody.setStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE.toString());
+				responseBody.setResponse("Unsupported Media Type");
+				
+				ResponseEntity<Response> response = new ResponseEntity(responseBody, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+				
+				return response;
 			}
 		} else if(message.getMessageType().equals("video")) {
 			
@@ -49,17 +57,38 @@ public class MessageService {
 		} else if(message.getMessageType().equals("txt")) {
 			
 		} else {
-			return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).build();
+			Response responseBody = new Response();
+			responseBody.setMessage("Only supporting image, video and txt at this time");
+			responseBody.setStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE.toString());
+			responseBody.setResponse("Unsupported Media Type");
+			
+			ResponseEntity<Response> response = new ResponseEntity(responseBody, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+			
+			return response;
 		}
 
 		// if insert successful - send 200
-		boolean response = messageDAO.insertMessage(message);
+		boolean dbResponse = messageDAO.insertMessage(message);
 
-		if (response) {
-			return ResponseEntity.status(HttpStatus.OK).build();
+		if (dbResponse) {
+			Response responseBody = new Response();
+			responseBody.setMessage("Message Posted");
+			responseBody.setStatus(HttpStatus.OK.toString());
+			responseBody.setResponse("Message Posted");
+			
+			ResponseEntity<Response> response = new ResponseEntity(responseBody, HttpStatus.OK);
+			
+			return response;
 		}
 
-		return ResponseEntity.badRequest().build();
+		Response responseBody = new Response();
+		responseBody.setMessage("Message not posted");
+		responseBody.setStatus(HttpStatus.BAD_REQUEST.toString());
+		responseBody.setResponse("Bad Request");
+		
+		ResponseEntity<Response> response = new ResponseEntity(responseBody, HttpStatus.BAD_REQUEST);
+		
+		return response;
 	}
 
 	public List<Message> getMessages(String sender, String receiver, String limit, String page) {

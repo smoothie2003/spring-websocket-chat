@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.asapp.rest.model.Message;
+import com.asapp.rest.model.Response;
 import com.asapp.service.MessageService;
 
 @RestController
@@ -21,9 +22,9 @@ public class MessageApi {
 	MessageService messageService;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> addMessage(@RequestBody Message message) {
+	public ResponseEntity<Response> addMessage(@RequestBody Message message) {
 		
-		ResponseEntity<Void> responseEntity = messageService.insertMessage(message);
+		ResponseEntity<Response> responseEntity = messageService.insertMessage(message);
 		
 		return responseEntity;
 	}

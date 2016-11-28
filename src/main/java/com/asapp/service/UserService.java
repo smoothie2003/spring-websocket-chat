@@ -24,7 +24,7 @@ public class UserService {
 
 		ResponseEntity<Response> responseEntity = null;
 
-		responseEntity = responseIfPassNotExist(user);
+		responseEntity = responseIfPassOrUserNotPopulated(user);
 
 		if(responseEntity == null) {
 			responseEntity = responseIfUserAlreadyExists(user);
@@ -43,7 +43,7 @@ public class UserService {
 		ResponseEntity<Response> responseEntity = null;
 
 		// Check if user already exists
-		responseEntity = this.responseIfPassNotExist(user);
+		responseEntity = this.responseIfPassOrUserNotPopulated(user);
 
 		if(responseEntity == null) {
 			
@@ -118,14 +118,15 @@ public class UserService {
 	}
 
 
-	private ResponseEntity<Response> responseIfPassNotExist(User user) {
+	private ResponseEntity<Response> responseIfPassOrUserNotPopulated(User user) {
 
-		if (user.getPass() == null || user.getPass().isEmpty()) {
+		if ((user.getPass() == null || user.getPass().isEmpty()) ||
+			(user.getUser() == null || user.getUser().isEmpty())) {
 			
 			Response response = new Response();
 			response.setStatus(HttpStatus.BAD_REQUEST.toString());
-			response.setMessage("Password not Populated");
-			response.setStatus("Bad Request");
+			response.setMessage("Password Or User not Populated");
+			response.setResponse("Bad Request");
 			
 			ResponseEntity<Response> responseBody = new ResponseEntity(response, HttpStatus.BAD_REQUEST);
 			
@@ -142,7 +143,7 @@ public class UserService {
 			Response response = new Response();
 			response.setStatus(HttpStatus.UNAUTHORIZED.toString());
 			response.setMessage("User already Existing");
-			response.setStatus("Unauthorized");
+			response.setResponse("Unauthorized");
 			
 			ResponseEntity<Response> responseBody = new ResponseEntity(response, HttpStatus.UNAUTHORIZED);
 			
