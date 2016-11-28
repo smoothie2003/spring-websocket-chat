@@ -1,0 +1,267 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Asapp Chat Application",
+		"_postman_id": "60d8d189-93b5-bb35-6a58-4fb218071a1b",
+		"description": "This is specifically for the demo project that we have put together.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Messages",
+			"description": "",
+			"item": [
+				{
+					"name": "GET Messages",
+					"request": {
+						"url": "localhost:8080/message?sender=varun&receiver=videoTest&limit=5&page=1",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST create new Message with TXT",
+					"request": {
+						"url": "localhost:8080/message",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sender\" : \"varun\",\n  \"receiver\" : \"sneha\",\n  \"messageBody\" : \"Hi bamb !\",\n  \"messageType\" : \"txt\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST create new Message with Image Link",
+					"request": {
+						"url": "localhost:8080/message",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sender\" : \"varun\",\n  \"receiver\" : \"imageTest\",\n  \"messageBody\" : \"http://i.onionstatic.com/avclub/6122/54/original/640.jpg\",\n  \"messageType\" : \"image\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST create new Message with Video Link",
+					"request": {
+						"url": "localhost:8080/message",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sender\" : \"varun\",\n  \"receiver\" : \"videoTest\",\n  \"messageBody\" : \"https://www.youtube.com/watch?v=34Na4j8AVgA\",\n  \"messageType\" : \"video\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST create new Message with Unknown Media Type",
+					"request": {
+						"url": "localhost:8080/message",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sender\" : \"varun\",\n  \"receiver\" : \"videoTest\",\n  \"messageBody\" : \"https://www.youtube.com/watch?v=34Na4j8AVgA\",\n  \"messageType\" : \"random\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET Messages Empty",
+					"request": {
+						"url": "localhost:8080/message?sender=someoneelse&receiver=videoTest&limit=5&page=1",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET Messages without correct PARAMS",
+					"request": {
+						"url": "localhost:8080/message?sender=someoneelse&limit=5&page=1",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"description": "",
+			"item": [
+				{
+					"name": "GET user with invalid password",
+					"request": {
+						"url": "localhost:8080/user?user=varun&pass=test",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET user with valid password",
+					"request": {
+						"url": "localhost:8080/user?user=sneha&pass=Gma5lJoLOxFKApkPU2nsLA==",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "GET User Missing Name parameter",
+					"request": {
+						"url": "localhost:8080/user",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST create new user SUCCESS",
+					"request": {
+						"url": "localhost:8080/user",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user\" : \"JasonDur\",\n  \"pass\" : \"test2\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST create new user DUPLICATE USER FAIL",
+					"request": {
+						"url": "localhost:8080/user",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user\" : \"varun\",\n  \"pass\" : \"test\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST create new user FAILED",
+					"request": {
+						"url": "localhost:8080/user",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user\" : \"sneha\",\n  \"pass\" : \"\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "POST change password for user",
+					"request": {
+						"url": "localhost:8080/user",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user\" : \"varun\",\n  \"passOld\" : \"test\",\n  \"passNew\" : \"test3\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
