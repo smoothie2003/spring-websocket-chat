@@ -1,23 +1,22 @@
 package com.asapp.dao;
 
+import com.asapp.rest.model.Message;
+import com.asapp.rest.model.User;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.sql.DataSource;
-
-import org.springframework.stereotype.Repository;
-
-import com.asapp.rest.model.User;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
 @Repository
-public class UserDAO {
-	
+public class MessageDAO {
+
 	private DataSource dataSource;
-	
-	public UserDAO() {
+
+	public MessageDAO() {
 		
 		MysqlDataSource localDataSource = new MysqlDataSource();
 		
@@ -32,7 +31,7 @@ public class UserDAO {
 		
 	}
 	
-	public User findUser(User user) {
+	public <List>Message findMessages(User user) {
 		
 		String queryString = "SELECT * FROM ad_cb81bf59e2f38f9.users WHERE ID = " + "\"" + user.getId() + "\"";
 		
@@ -52,7 +51,7 @@ public class UserDAO {
 			}
 			rs.close();
 			ps.close();
-			return userResult;
+			return null;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -94,44 +93,6 @@ public class UserDAO {
 			if (conn != null) {
 				try {
 				conn.close();
-				} catch (SQLException e) {}
-			}
-		}
-	}
-
-	public boolean createUserName(User user) {
-		String queryString = "INSERT VALUES("
-							 + user.getId() + ", "
-							 + user.getPass() + " )"
-				 			 + "INTO ad_cb81bf59e2f38f9.users";
-
-		Connection conn = null;
-
-		try {
-			conn = dataSource.getConnection();
-			PreparedStatement ps = conn.prepareStatement(queryString);
-
-			int userResult = 0;
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				userResult = rs.getInt("COUNT(ID)");
-
-			}
-			rs.close();
-			ps.close();
-
-			if(userResult != 0) {
-				return true;
-			} else {
-				return false;
-			}
-
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
 				} catch (SQLException e) {}
 			}
 		}
