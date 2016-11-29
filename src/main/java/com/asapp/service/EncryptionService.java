@@ -49,7 +49,7 @@ public class EncryptionService {
         final IvParameterSpec iv = new IvParameterSpec(getUTF8Bytes("1234567890123456"));
         Properties properties = new Properties();
         final String transform = "AES/CBC/PKCS5Padding";
-        String output = null;
+        String output = "";
         
 		InputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(value));
 
@@ -63,8 +63,7 @@ public class EncryptionService {
             output = new String(decryptedData, 0, decryptedLen, StandardCharsets.UTF_8);
             
         } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		}
         
         return output;

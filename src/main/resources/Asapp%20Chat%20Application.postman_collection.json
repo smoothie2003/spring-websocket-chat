@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "Asapp Chat Application",
-		"_postman_id": "60d8d189-93b5-bb35-6a58-4fb218071a1b",
+		"_postman_id": "3fa85e7d-19ea-67d6-bdd2-90b82ff44ab8",
 		"description": "This is specifically for the demo project that we have put together.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -14,7 +14,7 @@
 				{
 					"name": "GET Messages",
 					"request": {
-						"url": "localhost:8080/message?sender=varun&receiver=videoTest&limit=5&page=1",
+						"url": "localhost:8080/message?sender=varun&receiver=imageTest&limit=10&page=2",
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -39,7 +39,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"sender\" : \"varun\",\n  \"receiver\" : \"sneha\",\n  \"messageBody\" : \"Hi bamb !\",\n  \"messageType\" : \"txt\"\n}"
+							"raw": "{\n  \"sender\" : \"varun\",\n  \"receiver\" : \"sneha\",\n  \"messageBody\" : \"Hi sis !\",\n  \"messageType\" : \"txt\"\n}"
 						},
 						"description": ""
 					},
@@ -244,7 +244,7 @@
 				{
 					"name": "POST change password for user",
 					"request": {
-						"url": "localhost:8080/user",
+						"url": "localhost:8080/user?user=varun&passOld=test&passNew=test2",
 						"method": "PUT",
 						"header": [
 							{
